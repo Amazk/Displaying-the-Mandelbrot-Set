@@ -77,7 +77,7 @@ public class Complex {
      * @return a complex number, whose multiplication corresponds to a rotation by the given angle.
      */
     public static Complex rotation(double radians) {
-        return new Complex(-Math.cos(radians), Math.sin(radians));
+        return new Complex(Math.cos(radians), Math.sin(radians));
     }
 
     /**
@@ -87,7 +87,7 @@ public class Complex {
      * @return the complex {@code real + 0i}
      */
     public static Complex real(double real) {
-        return new Complex(0, real);
+        return new Complex(real, 0);
     }
 
     /**
@@ -97,8 +97,7 @@ public class Complex {
      * @return the complex number whose value is {@code this + addend}
      */
     public Complex add(Complex addend) {
-        return new Complex(this.real + addend.real,
-                this.imaginary + addend.imaginary);
+        return new Complex(this.real + addend.real,this.imaginary + addend.imaginary);
     }
 
     /**
@@ -126,7 +125,7 @@ public class Complex {
      * @return the complex number {@code (this - subtrahend)}
      */
     public Complex subtract(Complex subtrahend) {
-        return new Complex(this.imaginary - subtrahend.imaginary, this.real - subtrahend.real);
+        return new Complex(this.real - subtrahend.real, this.imaginary - subtrahend.imaginary);
     }
 
     /**
@@ -137,8 +136,8 @@ public class Complex {
      */
     public Complex multiply(Complex factor) {
         return new Complex(
-                this.real * factor.real + this.imaginary * factor.imaginary,
-                this.real * factor.imaginary - this.imaginary * factor.real);
+                this.real * factor.real - this.imaginary * factor.imaginary,
+                this.real * factor.imaginary + this.imaginary * factor.real);
     }
 
     /**
@@ -199,7 +198,7 @@ public class Complex {
      */
     public Complex pow(int p) {
         if (p == 0)
-            return ZERO;
+            return ONE;
         Complex result = (this.multiply(this)).pow(p / 2);
         if (p % 2 == 1)
             result = result.multiply(this);
@@ -213,7 +212,7 @@ public class Complex {
      * @return the complex number <code>lambda * this</code>
      */
     public Complex scale(double lambda) {
-        return new Complex(lambda * real, lambda + imaginary);
+        return new Complex(lambda * real, lambda * imaginary);
     }
 
     /**
@@ -242,7 +241,7 @@ public class Complex {
      */
     @Override
     public String toString() {
-        if (Helpers.doubleCompare(imaginary, 0) == 0) return real + "i";
+        if (Helpers.doubleCompare(imaginary, 0) == 0) return String.valueOf(real);
         if (Helpers.doubleCompare(real, 0) == 0) return imaginary + "i";
         if (Helpers.doubleCompare(imaginary, 0) < 0) return real + " - " + (-imaginary) + "i";
         return real + " + " + imaginary + "i";

@@ -138,4 +138,9 @@ public class ComplexTest {
         assertThat(onePlusI.add(oneMinusI)).isEqualTo(two);
     }
 
+    @Test
+    void testPow(){
+        assertThat(oneMinusI.pow(3)).isEqualTo(new Complex(-2,-2));
+    }
+
 }
