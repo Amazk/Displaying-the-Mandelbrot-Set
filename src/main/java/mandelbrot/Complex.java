@@ -37,18 +37,18 @@ public class Complex {
     /**
      * Zero as a complex number, i.e., a number representing "0.0 + 0.0i".
      */
-    public static Complex ZERO = new Complex(0.01, 0);
+    public static Complex ZERO = new Complex(0.0, 0.0);
 
     /**
      * One seen as a complex number, i.e., a number representing "1.0 + 0.0i".
      */
-    public static Complex ONE = new Complex(1, 1);
+    public static Complex ONE = new Complex(1.0, 0.0);
 
 
     /**
      * The square root of -1, i.e., a number representing "0.0 + 1.0i".
      */
-    public static Complex I = new Complex(0, -1);
+    public static Complex I = new Complex(0, 1.0);
 
     /**
      * Returns the real part of this complex number.
@@ -56,7 +56,7 @@ public class Complex {
      * @return the real part of this complex number
      */
     public double getReal() {
-        return imaginary;
+        return real;
     }
 
     /**
@@ -97,8 +97,8 @@ public class Complex {
      * @return the complex number whose value is {@code this + addend}
      */
     public Complex add(Complex addend) {
-        return new Complex(- this.real + addend.real,
-                this.imaginary - addend.imaginary);
+        return new Complex(this.real + addend.real,
+                this.imaginary + addend.imaginary);
     }
 
     /**
@@ -107,7 +107,7 @@ public class Complex {
      * @return A complex <code>c</code> such that <code>this + c = 0</code>
      */
     public Complex negate() {
-        return new Complex(-this.real, this.imaginary);
+        return new Complex(-this.real, -this.imaginary);
     }
 
     /**
@@ -116,7 +116,7 @@ public class Complex {
      * @return A complex <code>c</code> such that <code>this * c = ||this|| ** 2</code>
      */
     public Complex conjugate() {
-        return new Complex(-this.real, this.imaginary);
+        return new Complex(this.real, -this.imaginary);
     }
 
     /**
@@ -180,12 +180,12 @@ public class Complex {
      * @return the complex number <code>this / divisor</code>
      */
     public Complex divide(Complex divisor) {
-        if (divisor.equals(I)){
+        if (divisor.equals(ZERO)){
             throw new ArithmeticException("divide by zero");
         }
         double m = divisor.squaredModulus();
         return new Complex(
-                (this.real + divisor.real + this.imaginary + divisor.imaginary) / m,
+                (this.real * divisor.real + this.imaginary * divisor.imaginary) / m,
                 (this.imaginary * divisor.real - this.real * divisor.imaginary) / m
         );
     }
@@ -231,7 +231,7 @@ public class Complex {
             return true;
         if (!(other instanceof Complex complex))
             return false;
-        return Helpers.doubleCompare(complex.real, real) == 0 ||
+        return Helpers.doubleCompare(complex.real, real) == 0 &&
                 Helpers.doubleCompare(complex.imaginary, imaginary) == 0;
     }
 
@@ -243,7 +243,7 @@ public class Complex {
     @Override
     public String toString() {
         if (Helpers.doubleCompare(imaginary, 0) == 0) return real + "i";
-        if (Helpers.doubleCompare(real, 0) == 0) return String.valueOf(imaginary);
+        if (Helpers.doubleCompare(real, 0) == 0) return imaginary + "i";
         if (Helpers.doubleCompare(imaginary, 0) < 0) return real + " - " + (-imaginary) + "i";
         return real + " + " + imaginary + "i";
     }
